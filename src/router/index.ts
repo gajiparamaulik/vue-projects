@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
-import HomeView from '../views/HomeView.vue'
-import TaskView from '../views/TaskView.vue'
+import HomeView from '../views/HomeView.vue';
+import TaskView from '../views/TaskView.vue';
+import WeatherView from '../views/WeatherView.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -13,6 +14,10 @@ const router = createRouter({
         {
             path: '/tasks',
             component: TaskView
+        },
+        {
+            path: '/weather',
+            component: WeatherView
         }
     ]
 })
