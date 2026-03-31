@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
-const city = ref('');
+const city = ref('Bangalore');
 const weather = ref<any>(null);
 const loading = ref(false);
 const error = ref('');
 
 const API_KEY = '7996646101c04097b5562539262502';
+
+onMounted(() => {
+    getWeather();
+});
 
 const getWeather = async () => {
     if(!city.value) {
