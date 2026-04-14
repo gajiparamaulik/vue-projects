@@ -6,7 +6,7 @@ const router = useRouter()
 const apps = [
     { name: 'Task Manager', path: '/tasks', icon: '📝' },
     { name: 'Weather App', path: '/weather', icon: '🌤️' },
-    { name: 'Calculator', path: '/calculator', icon: '🧮' }
+    { name: 'Japa Counter', path: '/japa-counter', icon: '📿' }
 ]
 
 const goTo = (path: string) => {

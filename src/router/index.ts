@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import TaskView from '../views/TaskView.vue';
 import WeatherView from '../views/WeatherView.vue';
+import JapaCounter from '../views/JapaCounter.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -18,6 +19,10 @@ const router = createRouter({
         {
             path: '/weather',
             component: WeatherView
+        },
+        {
+            path: '/japa-counter',
+            component: JapaCounter
         }
     ]
 })
