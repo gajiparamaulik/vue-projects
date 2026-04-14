@@ -37,10 +37,10 @@ const getWeather = async () => {
     }
 }
 
-const numberFormat = (value: number | undefined) => {
-  if (value === undefined || value === null) return '-'
-  return value.toFixed(1)
-}
+// const numberFormat = (value: number | undefined) => {
+//   if (value === undefined || value === null) return '-'
+//   return value.toFixed(1)
+// }
 </script>
 
 <template>
