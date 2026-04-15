@@ -1,5 +1,6 @@
 <template>
     <div class="box">
+
         <div class="top-bar">
             <div class="stat">
                 <span>🧿 Malas</span>
@@ -17,9 +18,7 @@
             </div>
         </div>
 
-        <!-- MAIN -->
         <div class="main">
-            <!-- CIRCLE -->
             <div class="circle-wrapper">
                 <svg width="240" height="240">
                     <defs>
@@ -29,23 +28,23 @@
                         </linearGradient>
                     </defs>
 
-                    <circle class="bg" cx="110" cy="110" r="100"/>
-                    <circle class="progress" cx="110" cy="110" r="100" :style="{ strokeDashoffset: dashOffset }"/>
+                    <circle class="bg" cx="120" cy="120" r="100"/>
+
+                    <circle class="progress" cx="120" cy="120" r="100" :style="{ strokeDashoffset: dashOffset }"/>
                 </svg>
 
                 <div class="count">{{ count }}</div>
+
+                <div class="drops">
+                    <span v-for="d in dropList" :key="d.id" class="drop" :style="{ left: d.x + 'px', top: d.y + 'px' }"></span>
+                </div>
             </div>
 
-            <!-- TAP PANEL -->
             <div class="tap-panel" @click="increment">
-                <div class="tap-text">+ Tap to Chant</div>
+                <div class="tap-text">Tap to Chant</div>
             </div>
-
-            <!-- ACTIONS -->
-            <div class="actions">
-                <button class="play" @click="toggleTimer">{{ running ? "Pause" : "Start" }}</button>
-                <button class="reset" @click="reset">Reset</button>
-            </div>
+            
+            <button class="reset" @click="reset">↺</button>
         </div>
     </div>
 </template>
@@ -56,13 +55,14 @@ import '../assets/css/japa.css';
 
 const count = ref(0);
 const max = 108;
-const mode = ref("manual");
-
-const malas = computed(() => Math.floor(count.value / max));
 
 const seconds = ref(0);
 const running = ref(false);
 let interval = null;
+
+const dropList = ref([]);
+
+const malas = computed(() => Math.floor(count.value / max));
 
 const time = computed(() => {
     const m = String(Math.floor(seconds.value / 60)).padStart(2, "0");
@@ -70,16 +70,12 @@ const time = computed(() => {
     return `${m}:${s}`;
 });
 
-function toggleTimer() {
-    running.value = !running.value;
-
-    if (running.value) {
+function startTimer() {
+    if (!running.value) {
+        running.value = true;
         interval = setInterval(() => seconds.value++, 1000);
-    } else {
-        clearInterval(interval);
     }
 }
-
 
 const circumference = 2 * Math.PI * 100;
 
@@ -90,13 +86,33 @@ const dashOffset = computed(() => {
 
 function increment() {
     count.value++;
+    startTimer();
+
+    createDrops();
+
     if (navigator.vibrate) navigator.vibrate(20);
+}
+
+function createDrops() {
+    for (let i = 0; i < 4; i++) {
+        const id = Date.now() + Math.random();
+
+        dropList.value.push({
+            id,
+            x: Math.random() * 120 - 60,
+            y: Math.random() * 120 - 60,
+        });
+
+        setTimeout(() => {
+            dropList.value = dropList.value.filter(d => d.id !== id);
+        }, 600);
+    }
 }
 
 function reset() {
     count.value = 0;
     seconds.value = 0;
-    clearInterval(interval);
     running.value = false;
+    clearInterval(interval);
 }
 </script>
