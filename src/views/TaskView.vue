@@ -2,125 +2,148 @@
 import { ref, computed, onMounted } from 'vue';
 import { useTaskStore } from '../stores/taskStore';
 import { useRouter } from 'vue-router';
+import "../assets/css/taskView.css";
 
 const taskStore = useTaskStore();
 const router = useRouter();
 
 const title = ref('');
 const priority = ref<'low' | 'medium' | 'high'>('low');
-const filter = ref<'all' | 'completed' | 'pending'>('all')
+const filter = ref<'all' | 'completed' | 'pending'>('all');
 
 onMounted(() => {
-    console.log('data', taskStore.tasks);
     taskStore.loadFromLocalStorage();
-})
+});
 
 const addTask = () => {
-    if(!title.value.trim()) return;
+    if (!title.value.trim()) return;
     taskStore.addTasks(title.value, priority.value);
-    title.value = "";
+    title.value = '';
     priority.value = 'low';
-    console.log('check', taskStore.tasks);
-}
+};
 
 const filteredTasks = computed(() => {
-    if(filter.value === 'completed') return taskStore.completedTasks;
-    if(filter.value === 'pending') return taskStore.pendingTasks;
+    if (filter.value === 'completed') return taskStore.completedTasks;
+    if (filter.value === 'pending') return taskStore.pendingTasks;
     return taskStore.tasks;
-})
-
-const priorityClass = (priority: string) => {
-    switch (priority) {
-        case 'low':
-            return 'bg-success';
-        case 'medium':
-            return 'bg-warning text-dark';
-        case 'high':
-            return 'bg-danger';
-        default:
-            return 'bg-secondary';
-    }
-};
+});
 
 const goBack = () => {
-  router.back();
+    router.back();
 };
+
+const totalCount = computed(() => taskStore.tasks.length);
+const completedCount = computed(() => taskStore.completedTasks.length);
+const pendingCount = computed(() => taskStore.pendingTasks.length);
+const progressPercent = computed(() =>
+    totalCount.value === 0 ? 0 : Math.round((completedCount.value / totalCount.value) * 100)
+);
 </script>
 
 <template>
-    <div class="container py-5">
-        <div class="mb-3">
-            <button class="btn btn-outline-dark" @click="goBack">
-                Back To Home
+    <div class="page">
+        <!-- Background glow -->
+        <div class="bg-glow"></div>
+
+        <!-- Header -->
+        <header class="top-bar">
+            <button class="back-btn" @click="goBack">
+                <span class="back-icon">←</span>
+                <span>Back</span>
             </button>
-        </div>
-        <div class="card shadow-lg p-4">
-            <h2 class="text-center mb-4 text-primary">📝 Task Manager</h2>
+            <div class="page-badge">
+                <span>📝</span>
+                <span>Task Manager</span>
+            </div>
+        </header>
 
-            <div class="row g-2 mb-3">
-                <div class="col-md-6">
-                    <input type="text" v-model="title" class="form-control" placeholder="Enter Task"/>
+        <main class="main-content">
+
+            <!-- Hero title -->
+            <div class="page-hero">
+                <p class="hero-eyebrow">Stay Organised</p>
+                <h1 class="hero-title">My Tasks</h1>
+                <p class="hero-sub">Track, prioritise and complete your daily goals</p>
+            </div>
+
+            <!-- Stats row -->
+            <div class="stats-row">
+                <div class="stat-chip">
+                    <span class="stat-num">{{ totalCount }}</span>
+                    <span class="stat-label">Total</span>
                 </div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-track">
+                        <div class="progress-fill" :style="{ width: progressPercent + '%' }"></div>
+                    </div>
+                    <span class="progress-label">{{ progressPercent }}% done</span>
+                </div>
+                <div class="stat-chip">
+                    <span class="stat-num accent-green">{{ completedCount }}</span>
+                    <span class="stat-label">Done</span>
+                </div>
+                <div class="stat-chip">
+                    <span class="stat-num accent-amber">{{ pendingCount }}</span>
+                    <span class="stat-label">Pending</span>
+                </div>
+            </div>
 
-                <div class="col-md-3">
-                    <select v-model="priority" class="form-select">
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
+            <!-- Add task card -->
+            <div class="glass-card add-card">
+                <p class="card-label">Add New Task</p>
+                <div class="add-row">
+                    <input type="text" v-model="title" class="task-input"
+                        placeholder="What needs to be done?" @keydown.enter="addTask"/>
+                    <select v-model="priority" class="priority-select">
+                        <option value="low">🟢 Low</option>
+                        <option value="medium">🟡 Medium</option>
+                        <option value="high">🔴 High</option>
                     </select>
-                </div>
-
-                <div class="col-md-3 d-grid">
-                    <button class="btn btn-primary" @click="addTask">Add Task</button>
+                    <button class="add-btn" @click="addTask">
+                        <span>＋</span>
+                        <span>Add</span>
+                    </button>
                 </div>
             </div>
 
-            <div class="d-flex justify-content-center gap-2 mb-3 flex-wrap">
-                <button class="btn btn-outline-secondary" @click="filter = 'all'">All</button>
-                <button class="btn btn-outline-success" @click="filter = 'completed'">Completed</button>
-                <button class="btn btn-outline-warning" @click="filter = 'pending'">Pending</button>
+            <!-- Filter tabs -->
+            <div class="filter-tabs">
+                <button
+                    v-for="tab in [{ key: 'all', label: 'All', count: totalCount }, { key: 'pending', label: 'Pending', count: pendingCount }, { key: 'completed', label: 'Completed', count: completedCount }]"
+                    :key="tab.key" class="filter-tab" :class="{ active: filter === tab.key }" @click="filter = tab.key as any">
+                    {{ tab.label }}
+                    <span class="tab-count">{{ tab.count }}</span>
+                </button>
             </div>
 
-            <ul class="list-group">
-                <li v-for="task in filteredTasks" :key="task.id" class="list-group-item d-flex justify-content-between align-items-center">
-                    <span :class="['task-text', task.completed ? 'text-decoration-line-through text-muted' : '']"
-                        @click="taskStore.toggleTask(task.id)">
-                        {{ task.title }}
-                        <span class="badge ms-2" :class="priorityClass(task.priority)">{{ task.priority }}</span>
-                    </span>
-                    <button class="btn btn-sm btn-danger" @click="taskStore.deleteTask(task.id)">Delete</button>
-                </li>
-            </ul>
+            <!-- Task list -->
+            <div class="task-list">
+                <TransitionGroup name="task">
+                    <div v-for="task in filteredTasks" :key="task.id" class="task-item" :class="{ 'task-done': task.completed }">
+                        <button class="check-btn" @click="taskStore.toggleTask(task.id)">
+                            <span class="check-inner" :class="{ checked: task.completed }">
+                                <span v-if="task.completed" class="checkmark">✓</span>
+                            </span>
+                        </button>
 
-            <div v-if="filteredTasks.length === 0" class="text-center text-muted mt-3">No tasks found.</div>
-        </div>
+                        <span class="task-title" @click="taskStore.toggleTask(task.id)">
+                            {{ task.title }}
+                        </span>
+
+                        <span class="priority-badge" :class="'prio-' + task.priority">
+                            {{ task.priority }}
+                        </span>
+
+                        <button class="delete-btn" @click="taskStore.deleteTask(task.id)" title="Delete task">✕</button>
+                    </div>
+                </TransitionGroup>
+
+                <div v-if="filteredTasks.length === 0" class="empty-state">
+                    <span class="empty-icon">{{ filter === 'completed' ? '🏆' : filter === 'pending' ? '☕' : '✨' }}</span>
+                    <p>{{ filter === 'completed' ? 'No completed tasks yet' : filter === 'pending' ? 'No pending tasks!' : 'No tasks yet — add one above' }}</p>
+                </div>
+            </div>
+
+        </main>
     </div>
 </template>
-
-<style scoped>
-.card {
-  border-radius: 15px;
-}
-
-.task-text {
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.task-text:hover {
-  color: #0d6efd;
-}
-
-.list-group-item {
-  border-radius: 10px;
-  margin-bottom: 8px;
-}
-
-button {
-  transition: 0.2s ease-in-out;
-}
-
-button:hover {
-  transform: scale(1.05);
-}
-</style>
