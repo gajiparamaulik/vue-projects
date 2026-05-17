@@ -106,7 +106,6 @@
     font-size: 0.95rem;
     color: rgba(255, 255, 255, 0.45);
     margin: 0;
-    font-weight: 400;
     line-height: 1.6;
 }
 
@@ -176,7 +175,6 @@
     text-align: right;
 }
 
-/* ── Glass card ── */
 .glass-card {
     background: linear-gradient(160deg, #1e1e38 0%, #16162a 100%);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -220,10 +218,7 @@
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.task-input::placeholder {
-    color: rgba(255, 255, 255, 0.25);
-}
-
+.task-input::placeholder { color: rgba(255, 255, 255, 0.25); }
 .task-input:focus {
     border-color: rgba(56, 189, 248, 0.4);
     background: rgba(56, 189, 248, 0.05);
@@ -241,14 +236,8 @@
     transition: border-color 0.2s ease;
 }
 
-.priority-select:focus {
-    border-color: rgba(56, 189, 248, 0.4);
-}
-
-.priority-select option {
-    background: #1e1e38;
-    color: #f1f5f9;
-}
+.priority-select:focus { border-color: rgba(56, 189, 248, 0.4); }
+.priority-select option { background: #1e1e38; color: #f1f5f9; }
 
 .add-btn {
     display: flex;
@@ -266,16 +255,9 @@
     white-space: nowrap;
 }
 
-.add-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
+.add-btn:hover  { opacity: 0.9; transform: translateY(-1px); }
+.add-btn:active { transform: translateY(0); }
 
-.add-btn:active {
-    transform: translateY(0);
-}
-
-/* ── Filter tabs ── */
 .filter-tabs {
     display: flex;
     gap: 8px;
@@ -324,7 +306,6 @@
     color: #38bdf8;
 }
 
-/* ── Task list ── */
 .task-list {
     display: flex;
     flex-direction: column;
@@ -348,11 +329,8 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.task-item.task-done {
-    opacity: 0.5;
-}
+.task-item.task-done { opacity: 0.5; }
 
-/* ── Checkbox ── */
 .check-btn {
     background: none;
     border: none;
@@ -385,7 +363,6 @@
     line-height: 1;
 }
 
-/* ── Task text ── */
 .task-title {
     flex: 1;
     font-size: 0.9rem;
@@ -394,10 +371,10 @@
     cursor: pointer;
     line-height: 1.4;
     transition: color 0.15s ease;
-    overflow: hidden;
     text-overflow: ellipsis;
+    overflow: hidden;
 }
-
+ 
 .task-done .task-title {
     text-decoration: line-through;
     color: rgba(255, 255, 255, 0.25);
@@ -418,25 +395,10 @@
     flex-shrink: 0;
 }
 
-.prio-low {
-    background: rgba(74, 222, 128, 0.12);
-    color: #4ade80;
-    border: 1px solid rgba(74, 222, 128, 0.2);
-}
+.prio-low    { background: rgba(74,222,128,0.12);  color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
+.prio-medium { background: rgba(251,191,36,0.12);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+.prio-high   { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.2); }
 
-.prio-medium {
-    background: rgba(251, 191, 36, 0.12);
-    color: #fbbf24;
-    border: 1px solid rgba(251, 191, 36, 0.2);
-}
-
-.prio-high {
-    background: rgba(248, 113, 113, 0.12);
-    color: #f87171;
-    border: 1px solid rgba(248, 113, 113, 0.2);
-}
-
-/* ── Delete btn ── */
 .delete-btn {
     background: none;
     border: none;
@@ -466,63 +428,21 @@
     gap: 12px;
 }
 
-.empty-icon {
-    font-size: 3rem;
-    opacity: 0.6;
-}
+.empty-icon { font-size: 3rem; opacity: 0.6; }
+.empty-state p { margin: 0; font-size: 0.9rem; font-weight: 500; }
 
-.empty-state p {
-    margin: 0;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-/* ── Transitions ── */
 .task-enter-active,
-.task-leave-active {
-    transition: all 0.3s ease;
-}
+.task-leave-active { transition: all 0.3s ease; }
+.task-enter-from   { opacity: 0; transform: translateY(-10px); }
+.task-leave-to     { opacity: 0; transform: translateX(20px); }
 
-.task-enter-from {
-    opacity: 0;
-    transform: translateY(-10px);
-}
-
-.task-leave-to {
-    opacity: 0;
-    transform: translateX(20px);
-}
-
-/* ── Responsive ── */
 @media (max-width: 540px) {
-    .top-bar {
-        padding: 16px 16px;
-    }
-
-    .main-content {
-        padding: 32px 16px 60px;
-    }
-
-    .stats-row {
-        gap: 10px;
-        padding: 14px 16px;
-    }
-
-    .add-row {
-        flex-direction: column;
-    }
-
+    .top-bar      { padding: 16px; }
+    .main-content { padding: 32px 16px 60px; }
+    .stats-row    { gap: 10px; padding: 14px 16px; }
+    .add-row      { flex-direction: column; }
     .priority-select,
-    .add-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .filter-tabs {
-        flex-wrap: wrap;
-    }
-
-    .task-item {
-        padding: 12px 14px;
-    }
+    .add-btn      { width: 100%; justify-content: center; }
+    .filter-tabs  { flex-wrap: wrap; }
+    .task-item    { padding: 12px 14px; }
 }
