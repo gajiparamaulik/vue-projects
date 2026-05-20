@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue';
 import TaskView from '../views/TaskView.vue';
 import WeatherView from '../views/WeatherView.vue';
 import JapaCounter from '../views/JapaCounter.vue';
+import UserListView from '../views/UserListView.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -23,6 +24,10 @@ const router = createRouter({
         {
             path: '/japa-counter',
             component: JapaCounter
+        },
+        {
+            path: '/user-list',
+            component: UserListView
         }
     ]
 })
