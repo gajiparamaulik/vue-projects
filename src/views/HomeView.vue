@@ -8,7 +8,8 @@ const apps = [
     { name: 'Task Manager', path: '/tasks', icon: '📝', desc: 'Manage your daily tasks with priority levels' },
     { name: 'Weather App', path: '/weather', icon: '🌤️', desc: 'Check live weather for any city worldwide' },
     { name: 'Japa Counter', path: '/japa-counter', icon: '📿', desc: 'Track your chanting sessions with ease' },
-    { name: 'User List', path: '/user-list', icon: '👥', desc: 'View and manage your user list' }
+    { name: 'User List', path: '/user-list', icon: '👥', desc: 'View and manage your user list' },
+    { name: 'Recipe Finder App', path: '/recipe-finder', icon: '🍳', desc: 'Find delicious recipes based on your ingredients' }
 ]
 </script>
 

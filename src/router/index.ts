@@ -28,6 +28,10 @@ const router = createRouter({
         {
             path: '/user-list',
             component: UserListView
+        },
+        {
+            path: '/recipe-finder',
+            component: () => import('../views/RecipeFinderView.vue')
         }
     ]
 })
